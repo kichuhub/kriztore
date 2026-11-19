@@ -5,11 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useStore } from "@/components/StoreProvider";
 
-const logoUrl =
-  "https://lh3.googleusercontent.com/aida/ALJJyrB4s4XNlqG-8QH-vdpL2DQkNrS3us84A5arqRme58DNsEpTO41H69WlxehIsTy_k3sy-ikKHCS7TuR8Q6ehQ7cSPUWLsrcQloB7RyZrgobT5AP5H4ZNUNhHlb4Ekuc3OWjHlTN0p4ajfN2DEjUE7ovZsKFOMAOcrt0CS0i9byFdEd6SsLSqsLdXkwpQzadE1sxmXcr8HXSvvmupCsZnjavwV63VxIVtRhBAdpG62mj4";
+const logoUrl = "/images/kriztore-logo.png";
 
-const profileUrl =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCngScaf8HddCBVlAbrDjr3cYCwvJ-qLfksQOOAtanSjCPdeh4osi0u-HnDCzOOYi0esO3r6mjta63boR8EZotPrLYFk56Ks5JzZbLGW5HteFrRtO-iq5LgWY5HB9xt-u8lE291C-6-P2YfFZOUbBNV2ap50tLojcKU2TBbowxZzN7OE5go_JTGfCjKPttqyqC5wx7LKOjq3NBpsvy7JT0xrFuNfX6ZHKK86mzSqDPu";
+const profileUrl = "/images/profile.png";
 
 const desktopNav = [
   { href: "/", label: "Home" },
