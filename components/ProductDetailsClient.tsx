@@ -1,11 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { formatPrice, getProduct } from "@/lib/products";
 import { useStore } from "@/components/StoreProvider";
-import ThreePhoneViewer from "@/components/ThreePhoneViewer";
 import { PhoneMockup } from "@/components/PhoneMockup";
+
+const ThreePhoneViewer = dynamic(() => import("@/components/ThreePhoneViewer"), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-full w-full place-items-center text-label-sm text-on-surface-variant">
+      Loading 3D preview...
+    </div>
+  )
+});
 
 export function ProductDetailsClient() {
   const searchParams = useSearchParams();
@@ -14,7 +23,7 @@ export function ProductDetailsClient() {
 
   const [colorIndex, setColorIndex] = useState(0);
   const [storageIndex, setStorageIndex] = useState(0);
-  const [view, setView] = useState<"3d" | "back" | "front">("3d");
+  const [view, setView] = useState<"3d" | "back" | "front">("back");
   const [added, setAdded] = useState(false);
 
   const color = product.colors[colorIndex] ?? product.colors[0];
@@ -22,19 +31,24 @@ export function ProductDetailsClient() {
   const price = storage?.price ?? product.price;
   const liked = isWishlisted(product.id);
 
-  const handleAdd = () => {
-    addToCart(product, {
-      color: color?.name,
-      storage: storage?.label,
-      price
-    });
+  const handleAdd = (event: MouseEvent<HTMLButtonElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    addToCart(
+      product,
+      {
+        color: color?.name,
+        storage: storage?.label,
+        price
+      },
+      { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+    );
     setAdded(true);
     window.setTimeout(() => setAdded(false), 1800);
   };
 
   return (
-    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10">
-      <section className="relative h-72 overflow-hidden rounded-2xl bg-surface-container-high md:h-96 lg:sticky lg:top-28 lg:h-[540px]">
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10 xl:gap-14">
+      <section className="relative h-72 overflow-hidden rounded-2xl bg-surface-container-high md:h-96 lg:sticky lg:top-28 lg:h-[540px] xl:h-[600px]">
         {product.badge && (
           <span className="absolute left-3 top-3 z-10 rounded-full bg-primary px-3 py-1 text-label-sm font-bold tracking-wide text-on-primary">
             {product.badge}
@@ -87,7 +101,7 @@ export function ProductDetailsClient() {
           <p className="text-label-sm font-semibold uppercase tracking-[0.18em] text-primary">
             {product.category}
           </p>
-          <h1 className="mt-1 text-headline-lg font-semibold text-on-surface lg:text-display">
+          <h1 className="mt-1 text-headline-lg font-semibold text-on-surface lg:text-display xl:text-[64px] xl:leading-[68px]">
             {product.name}
           </h1>
           <p className="mt-1 text-body-md text-on-surface-variant">{product.tagline}</p>
@@ -117,7 +131,7 @@ export function ProductDetailsClient() {
                 type="button"
                 aria-label={item.name}
                 onClick={() => setColorIndex(index)}
-                className={`h-10 w-10 rounded-full border-2 transition-transform md:h-11 md:w-11 ${
+                className={`h-10 w-10 rounded-full border-2 transition-transform md:h-11 md:w-11 lg:h-12 lg:w-12 ${
                   index === colorIndex ? "scale-110 border-primary" : "border-outline-variant/40"
                 }`}
                 style={{ backgroundColor: item.value }}

@@ -1,8 +1,24 @@
 import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { StoreProvider } from "@/components/StoreProvider";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { CartFeedback } from "@/components/CartFeedback";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter"
+});
+
+const materialSymbols = localFont({
+  src: "../public/fonts/MaterialSymbolsOutlined.woff2",
+  display: "swap",
+  weight: "400",
+  variable: "--font-material-symbols"
+});
 
 export const metadata: Metadata = {
   title: "Kriztore — Next-Gen Flagships",
@@ -17,23 +33,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-        />
-      </head>
+    <html lang="en" className={`${inter.variable} ${materialSymbols.variable}`}>
       <body className="bg-surface text-on-surface antialiased">
         <StoreProvider>
-          <div className="relative mx-auto min-h-screen max-w-md bg-surface shadow-2xl md:max-w-2xl lg:max-w-6xl">
+          <div className="relative min-h-screen w-full bg-surface shadow-2xl">
             <SiteHeader />
-            <main className="min-h-screen px-margin-mobile pb-[92px] pt-[76px] md:px-8 lg:pb-16 lg:pr-10 lg:pt-[100px]">
+            <main className="min-h-screen px-margin-mobile pb-[92px] pt-[76px] md:px-8 lg:pb-16 lg:px-10 lg:pt-[100px] xl:px-12 2xl:px-16">
               {children}
             </main>
             <BottomNav />
+            <CartFeedback />
           </div>
         </StoreProvider>
       </body>

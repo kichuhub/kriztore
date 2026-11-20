@@ -27,7 +27,11 @@ export function PhoneMockup({
     >
       <div
         className={`relative rounded-[2rem] border border-white/20 shadow-2xl transition-all duration-500 ${
-          compact ? "h-36 w-[4.6rem]" : large ? "h-80 w-40 lg:h-96 lg:w-48" : "h-64 w-32"
+          compact
+            ? "h-36 w-[4.6rem]"
+            : large
+              ? "h-80 w-40 lg:h-96 lg:w-48 xl:h-[27rem] xl:w-[13.5rem]"
+              : "h-64 w-32"
         } ${isEdge ? "rotate-y-[70deg] scale-x-[0.35]" : ""}`}
         style={{ background: `linear-gradient(160deg, ${color}, ${accent})` }}
       >

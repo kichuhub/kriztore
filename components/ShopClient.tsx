@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { products } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
@@ -10,8 +10,13 @@ const categories = ["All", "Flagship", "Android", "Foldable", "Concept", "Access
 export function ShopClient() {
   const searchParams = useSearchParams();
   const initial = searchParams.get("category") ?? "All";
+  const queryParam = searchParams.get("q") ?? "";
   const [category, setCategory] = useState(categories.includes(initial) ? initial : "All");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(queryParam);
+
+  useEffect(() => {
+    setQuery(queryParam);
+  }, [queryParam]);
 
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -20,7 +25,8 @@ export function ShopClient() {
         (category === "All" || product.category === category) &&
         (!term ||
           product.name.toLowerCase().includes(term) ||
-          product.tagline.toLowerCase().includes(term))
+          product.tagline.toLowerCase().includes(term) ||
+          product.category.toLowerCase().includes(term))
     );
   }, [category, query]);
 
@@ -47,7 +53,7 @@ export function ShopClient() {
           />
         </label>
 
-        <div className="no-scrollbar -mx-margin-mobile flex flex-1 gap-2 overflow-x-auto px-margin-mobile lg:mx-0 lg:px-0">
+        <div className="no-scrollbar -mx-margin-mobile flex flex-1 gap-2 overflow-x-auto px-margin-mobile md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
           {categories.map((item) => (
             <button
               key={item}
@@ -68,7 +74,7 @@ export function ShopClient() {
       <p className="text-label-md text-on-surface-variant">{visible.length} products</p>
 
       {visible.length > 0 ? (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4 xl:grid-cols-6 2xl:grid-cols-7">
           {visible.map((product) => (
             <ProductCard key={product.id} product={product} className="w-full" />
           ))}

@@ -26,15 +26,25 @@ type AddToCartOptions = {
   price?: number;
 };
 
+export type CartOrigin = { x: number; y: number };
+
+export type AddedItem = {
+  id: number;
+  name: string;
+  origin?: CartOrigin;
+};
+
 type StoreContextValue = {
   cart: CartItem[];
+  cartBump: number;
+  lastAdded: AddedItem | null;
   cartCount: number;
   subtotal: number;
   shipping: number;
   tax: number;
   total: number;
   wishlist: string[];
-  addToCart: (product: Product, options?: AddToCartOptions) => void;
+  addToCart: (product: Product, options?: AddToCartOptions, origin?: CartOrigin) => void;
   removeFromCart: (id: string) => void;
   updateQty: (id: string, qty: number) => void;
   toggleWishlist: (id: string) => void;
@@ -67,8 +77,10 @@ const initialCart: CartItem[] = [
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(initialCart);
   const [wishlist, setWishlist] = useState<string[]>(["obsidian-fold-v5"]);
+  const [cartBump, setCartBump] = useState(0);
+  const [lastAdded, setLastAdded] = useState<AddedItem | null>(null);
 
-  const addToCart = useCallback((product: Product, options: AddToCartOptions = {}) => {
+  const addToCart = useCallback((product: Product, options: AddToCartOptions = {}, origin?: CartOrigin) => {
     const color = options.color ?? product.colors[0]?.name ?? "Default";
     const storage = options.storage ?? product.storage[0]?.label ?? "Standard";
     const price = options.price ?? product.price;
@@ -94,6 +106,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           accent: product.accent
         }
       ];
+    });
+
+    setCartBump((count) => count + 1);
+    setLastAdded({
+      id: Date.now() + Math.random(),
+      name: product.name,
+      origin
     });
   }, []);
 
@@ -133,6 +152,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     () => ({
       cart,
       cartCount,
+      cartBump,
+      lastAdded,
       subtotal,
       shipping,
       tax,
@@ -147,6 +168,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [
       cart,
       cartCount,
+      cartBump,
+      lastAdded,
       subtotal,
       tax,
       total,

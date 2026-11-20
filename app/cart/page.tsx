@@ -29,7 +29,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-8">
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-8 xl:grid-cols-[minmax(0,1fr)_400px]">
       <div className="lg:col-span-2">
         <p className="text-label-sm font-semibold uppercase tracking-[0.18em] text-primary">
           {cartCount} {cartCount === 1 ? "item" : "items"}
@@ -47,7 +47,7 @@ export default function CartPage() {
               key={`${item.id}-${item.color}-${item.storage}`}
               className="flex gap-3 rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-3 md:p-4"
             >
-              <div className="h-24 w-20 shrink-0 overflow-hidden rounded-lg md:h-32 md:w-28">
+              <div className="h-24 w-20 shrink-0 overflow-hidden rounded-lg md:h-32 md:w-28 lg:h-36 lg:w-32">
                 <PhoneMockup
                   color={item.accent}
                   accent={product.accent}

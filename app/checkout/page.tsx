@@ -64,7 +64,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-8">
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-8 xl:grid-cols-[minmax(0,1fr)_400px]">
       <div className="lg:col-span-2">
         <p className="text-label-sm font-semibold uppercase tracking-[0.18em] text-primary">
           WhatsApp checkout

@@ -66,7 +66,10 @@ export function ProductCard({
           <button
             type="button"
             aria-label={`Add ${product.name} to cart`}
-            onClick={() => addToCart(product)}
+            onClick={(event) => {
+              const rect = event.currentTarget.getBoundingClientRect();
+              addToCart(product, {}, { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+            }}
             className="grid h-8 w-8 place-items-center rounded-full bg-primary text-on-primary"
           >
             <span className="material-symbols-outlined text-[18px]">add</span>
